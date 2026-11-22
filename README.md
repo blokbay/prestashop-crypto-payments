@@ -1,4 +1,6 @@
-# Blokbay crypto payments for PrestaShop (1.7.6 to 9.x)
+# PrestaShop (1.7.6 to 9.x) Crypto Payment Gateway: Bitcoin, USDT, USDC, ETH (Blokbay)
+
+Accept crypto payments in PrestaShop: Bitcoin (BTC), Tether (USDT), USD Coin (USDC) and Ether (ETH) on Ethereum, BNB Smart Chain (BSC), Polygon, Base and Arbitrum. Non-custodial: every payment goes straight to your own wallet. 1% per payment, no monthly fee. Download the latest release: [Releases](../../releases/latest).
 
 Accept Bitcoin, USDC, USDT and ETH. Funds go from the buyer straight to your wallet; Blokbay withholds 1% of each payment, no monthly fee. Full guide: `docs/readme_en.pdf`.
 
