@@ -26,3 +26,4 @@ $_MODULE['<{blokbay}prestashop>blokbay_13c6aefb053ca8ffa36ec8cb6d5b75c3'] = 'Dir
 $_MODULE['<{blokbay}prestashop>blokbay_7b627738d0b71380decb99cc00e9af46'] = 'No lo cambies.';
 $_MODULE['<{blokbay}prestashop>blokbay_c9cc8cce247e49bae79f15173ce97354'] = 'Guardar';
 $_MODULE['<{blokbay}prestashop>redirect_857ccc023d7a9b1c8ff567c8617798ef'] = 'No se pudo crear el pago en cripto. Inténtalo de nuevo.';
+$_MODULE['<{blokbay}prestashop>blokbay_670bd071415d0a67e8eb6785c833d529'] = 'Blokbay acepta precios en %s. La divisa predeterminada de esta tienda es %s: la opción de pago en cripto queda oculta para los carritos en esa divisa.';

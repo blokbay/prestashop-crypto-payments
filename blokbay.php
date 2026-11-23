@@ -27,7 +27,7 @@ class Blokbay extends PaymentModule
     {
         $this->name = 'blokbay';
         $this->tab = 'payments_gateways';
-        $this->version = '1.0.0';
+        $this->version = '1.1.0';
         $this->author = 'Blokbay';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -129,7 +129,7 @@ class Blokbay extends PaymentModule
     }
 
     /**
-     * Payment option "Pay with crypto" (only for carts in US dollars).
+     * Payment option "Pay with crypto" (only for carts in a currency accepted by Blokbay: USD, EUR, GBP, CHF, JPY, CAD, AUD, SGD, HKD, AED).
      */
     public function hookPaymentOptions($params)
     {
@@ -137,7 +137,7 @@ class Blokbay extends PaymentModule
             return [];
         }
         $currency = new Currency((int) $params['cart']->id_currency);
-        if ($currency->iso_code !== 'USD') {
+        if (!BlokbayApi::supported($currency->iso_code)) {
             return [];
         }
         $option = new PaymentOption();
@@ -173,6 +173,20 @@ class Blokbay extends PaymentModule
     /**
      * Configuration page.
      */
+    /**
+     * Notice for the module page when the default currency of the shop is not accepted by Blokbay (the option stays hidden
+     * for carts in that currency). Empty string when the currency is accepted.
+     */
+    public function currencyNotice()
+    {
+        $default = new Currency((int) Configuration::get('PS_CURRENCY_DEFAULT'));
+        if (!Validate::isLoadedObject($default) || BlokbayApi::supported($default->iso_code)) {
+            return '';
+        }
+
+        return sprintf($this->l('Blokbay accepts prices in %s. The default currency of this shop is %s: the crypto payment option stays hidden for carts in that currency.'), implode(', ', array_keys(BlokbayApi::CURRENCIES)), $default->iso_code);
+    }
+
     public function getContent()
     {
         $output = '';
@@ -188,6 +202,10 @@ class Blokbay extends PaymentModule
                 }
             }
             $output .= $this->displayConfirmation($this->l('Settings saved.'));
+        }
+        $notice = $this->currencyNotice();
+        if ($notice !== '') {
+            $output .= $this->displayWarning($notice);
         }
         $webhook = $this->context->link->getModuleLink($this->name, 'webhook', [], true);
         $form = ['form' => [
@@ -271,7 +289,9 @@ class Blokbay extends PaymentModule
         if ($status === 'paid') {
             $amount = isset($payment['amount']) ? $payment['amount'] : '';
             $currency = isset($payment['currency']) ? $payment['currency'] : '';
-            if ($row['amount'] !== $amount || $currency !== 'USD') {
+            // Amount and currency of the order (the amount was saved formatted in the order currency when the payment was created).
+            $orderCurrency = new Currency((int) $order->id_currency);
+            if ($row['amount'] !== $amount || $currency !== strtoupper((string) $orderCurrency->iso_code)) {
                 return 'amount mismatch';
             }
             if ($order->hasBeenPaid()) {

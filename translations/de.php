@@ -26,3 +26,4 @@ $_MODULE['<{blokbay}prestashop>blokbay_13c6aefb053ca8ffa36ec8cb6d5b75c3'] = 'API
 $_MODULE['<{blokbay}prestashop>blokbay_7b627738d0b71380decb99cc00e9af46'] = 'Nicht ändern.';
 $_MODULE['<{blokbay}prestashop>blokbay_c9cc8cce247e49bae79f15173ce97354'] = 'Speichern';
 $_MODULE['<{blokbay}prestashop>redirect_857ccc023d7a9b1c8ff567c8617798ef'] = 'Die Krypto-Zahlung konnte nicht erstellt werden. Bitte versuchen Sie es erneut.';
+$_MODULE['<{blokbay}prestashop>blokbay_670bd071415d0a67e8eb6785c833d529'] = 'Blokbay akzeptiert Preise in %s. Die Standardwährung dieses Shops ist %s: Die Krypto-Zahlungsoption bleibt für Warenkörbe in dieser Währung ausgeblendet.';

@@ -36,11 +36,25 @@ class BlokbayApi
     }
 
     /**
-     * USD amount with 2 decimals, as a string ("249.90").
+     * Currencies accepted by the Blokbay API, with their decimals (JPY has none). The buyer pays in crypto at the current
+     * exchange rate; amount and currency come back in the payment and in webhooks exactly as sent.
      */
-    public static function amount($value)
+    const CURRENCIES = ['USD' => 2, 'EUR' => 2, 'GBP' => 2, 'CHF' => 2, 'JPY' => 0, 'CAD' => 2, 'AUD' => 2, 'SGD' => 2, 'HKD' => 2, 'AED' => 2];
+
+    public static function supported($currency)
     {
-        return number_format(round((float) $value, 2), 2, '.', '');
+        return isset(self::CURRENCIES[strtoupper((string) $currency)]);
+    }
+
+    /**
+     * Amount with the decimals of the currency, as a string ("249.90", JPY "25000").
+     */
+    public static function amount($value, $currency = 'USD')
+    {
+        $code = strtoupper((string) $currency);
+        $dec = isset(self::CURRENCIES[$code]) ? self::CURRENCIES[$code] : 2;
+
+        return number_format(round((float) $value, $dec), $dec, '.', '');
     }
 
     /**
@@ -48,20 +62,22 @@ class BlokbayApi
      * amount. Two shops on the same Blokbay account, or a reinstalled shop whose order numbers start again from 1,
      * never get the payment of another order.
      */
-    public static function idempotencyKey($shopUid, $idOrder, $reference, $amount)
+    public static function idempotencyKey($shopUid, $idOrder, $reference, $amount, $currency = 'USD')
     {
-        return substr('ps-' . $shopUid . '-' . (int) $idOrder . '-' . preg_replace('/[^A-Za-z0-9]/', '', (string) $reference) . '-' . $amount, 0, 100);
+        $cur = strtoupper((string) $currency);
+
+        return substr('ps-' . $shopUid . '-' . (int) $idOrder . '-' . preg_replace('/[^A-Za-z0-9]/', '', (string) $reference) . '-' . $amount . ($cur === 'USD' ? '' : '-' . $cur), 0, 100);
     }
 
     /**
      * True when the payment returned by the API belongs to this order (same reference, amount and currency).
      */
-    public static function matchesOrder(array $payment, $reference, $amount)
+    public static function matchesOrder(array $payment, $reference, $amount, $currency = 'USD')
     {
         return isset($payment['reference'], $payment['amount'], $payment['currency'])
             && (string) $payment['reference'] === (string) $reference
             && (string) $payment['amount'] === (string) $amount
-            && $payment['currency'] === 'USD';
+            && $payment['currency'] === strtoupper((string) $currency);
     }
 
     public function createPayment(array $data, $idempotencyKey = '')

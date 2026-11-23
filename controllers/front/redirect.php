@@ -27,11 +27,12 @@ class BlokbayRedirectModuleFrontController extends ModuleFrontController
         }
         $customer = new Customer((int) $cart->id_customer);
         $currency = new Currency((int) $cart->id_currency);
-        if (!Validate::isLoadedObject($customer) || $currency->iso_code !== 'USD') {
+        if (!Validate::isLoadedObject($customer) || !BlokbayApi::supported($currency->iso_code)) {
             Tools::redirect('index.php?controller=order&step=1');
         }
+        $iso = strtoupper((string) $currency->iso_code);
         $total = (float) $cart->getOrderTotal(true, Cart::BOTH);
-        $amount = BlokbayApi::amount($total);
+        $amount = BlokbayApi::amount($total, $iso);
         $this->module->validateOrder(
             (int) $cart->id,
             (int) Configuration::get('BLOKBAY_OS_AWAITING'),
@@ -53,20 +54,20 @@ class BlokbayRedirectModuleFrontController extends ModuleFrontController
         ]);
         $fields = [
             'amount' => $amount,
-            'currency' => 'USD',
+            'currency' => $iso,
             'reference' => (string) $order->reference,
             'description' => 'Order ' . $order->reference,
             'customer_email' => (string) $customer->email,
             'url_success' => $success,
             'url_cancel' => $this->context->link->getPageLink('order', true),
         ];
-        $key = BlokbayApi::idempotencyKey($this->module->shopUid(), $idOrder, $order->reference, $amount);
+        $key = BlokbayApi::idempotencyKey($this->module->shopUid(), $idOrder, $order->reference, $amount, $iso);
         $res = $this->module->api()->createPayment($fields, $key);
-        if (!empty($res['id']) && !BlokbayApi::matchesOrder($res, $order->reference, $amount)) {
+        if (!empty($res['id']) && !BlokbayApi::matchesOrder($res, $order->reference, $amount, $iso)) {
             // A payment of another order came back for this key: never use it, create a new one.
             $res = $this->module->api()->createPayment($fields, substr($key, 0, 80) . '-' . bin2hex(random_bytes(6)));
         }
-        if (empty($res['id']) || empty($res['url']) || !BlokbayApi::matchesOrder($res, $order->reference, $amount)) {
+        if (empty($res['id']) || empty($res['url']) || !BlokbayApi::matchesOrder($res, $order->reference, $amount, $iso)) {
             $this->paymentFailed($order, $cart, isset($res['error']) ? $res['error'] : 'error');
 
             return;
