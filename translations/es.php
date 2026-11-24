@@ -10,10 +10,10 @@
 global $_MODULE;
 $_MODULE = [];
 $_MODULE['<{blokbay}prestashop>blokbay_a33b8077f67e2284bf8cbd5597d8f7f9'] = 'Pagos en cripto (Blokbay)';
-$_MODULE['<{blokbay}prestashop>blokbay_6715f1578707a8e118f5b9e1a2cc3103'] = 'Acepta BTC, USDC, USDT y ETH. Los fondos llegan directamente a tu wallet. 1 % por pago, sin cuota mensual.';
+$_MODULE['<{blokbay}prestashop>blokbay_0c1c86b95b267ae9af16f40cff221408'] = 'Acepta USDT, USDC, ETH, BTC y SOL. Los fondos llegan directamente a tu wallet. 1 % por pago, sin cuota mensual.';
 $_MODULE['<{blokbay}prestashop>blokbay_390affd7a375251a3613f70bbfe03688'] = '¿Eliminar los ajustes de Blokbay? Tus pedidos no se borran.';
 $_MODULE['<{blokbay}prestashop>blokbay_7b90929367a3857067385b2762d14d06'] = 'Pagar con cripto';
-$_MODULE['<{blokbay}prestashop>blokbay_f010436d02e53c008960124f275f904f'] = 'BTC, USDC, USDT o ETH desde tu wallet.';
+$_MODULE['<{blokbay}prestashop>blokbay_f9f137cb19d7557e9a2539c2c1c5b4d9'] = 'Paga con cripto: USDT, USDC, ETH, BTC o SOL, desde tu wallet o un exchange';
 $_MODULE['<{blokbay}prestashop>blokbay_9a7e58ee13cb727cb7c4acc68f4cafe5'] = 'Ajustes guardados.';
 $_MODULE['<{blokbay}prestashop>blokbay_0ac69ebda00a53125b59951d72c4dd8d'] = 'Blokbay';
 $_MODULE['<{blokbay}prestashop>blokbay_1b80c44d9f038ef3b793c32a6ce26a46'] = 'En Blokbay (Pagos en tu sitio) indica esta URL de webhook: %s';

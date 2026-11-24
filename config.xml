@@ -2,8 +2,8 @@
 <module>
     <name>blokbay</name>
     <displayName><![CDATA[Crypto payments (Blokbay)]]></displayName>
-    <version><![CDATA[1.1.0]]></version>
-    <description><![CDATA[Accept BTC, USDC, USDT and ETH. Funds go directly to your wallet. 1% per payment, no monthly fee.]]></description>
+    <version><![CDATA[1.2.0]]></version>
+    <description><![CDATA[Accept USDT, USDC, ETH, BTC and SOL. Funds go directly to your wallet. 1% per payment, no monthly fee.]]></description>
     <author><![CDATA[Blokbay]]></author>
     <tab><![CDATA[payments_gateways]]></tab>
     <confirmUninstall><![CDATA[Remove the Blokbay settings? Your orders are not deleted.]]></confirmUninstall>

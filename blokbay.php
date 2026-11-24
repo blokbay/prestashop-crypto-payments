@@ -16,7 +16,7 @@ require_once __DIR__ . '/classes/BlokbayApi.php';
 use PrestaShop\PrestaShop\Core\Payment\PaymentOption;
 
 /**
- * Payment module: BTC, USDC, USDT and ETH paid from the customer's wallet straight to the merchant's wallet.
+ * Payment module: USDT, USDC, ETH, BTC and SOL paid from the customer's wallet or exchange account straight to the merchant's wallet.
  * The customer pays on the Blokbay payment page; the signed webhook marks the order paid.
  */
 class Blokbay extends PaymentModule
@@ -27,7 +27,7 @@ class Blokbay extends PaymentModule
     {
         $this->name = 'blokbay';
         $this->tab = 'payments_gateways';
-        $this->version = '1.1.0';
+        $this->version = '1.2.0';
         $this->author = 'Blokbay';
         $this->need_instance = 0;
         $this->bootstrap = true;
@@ -35,7 +35,7 @@ class Blokbay extends PaymentModule
         $this->ps_versions_compliancy = ['min' => '1.7.6.0', 'max' => '9.99.99'];
         parent::__construct();
         $this->displayName = $this->l('Crypto payments (Blokbay)');
-        $this->description = $this->l('Accept BTC, USDC, USDT and ETH. Funds go directly to your wallet. 1% per payment, no monthly fee.');
+        $this->description = $this->l('Accept USDT, USDC, ETH, BTC and SOL. Funds go directly to your wallet. 1% per payment, no monthly fee.');
         $this->confirmUninstall = $this->l('Remove the Blokbay settings? Your orders are not deleted.');
     }
 
@@ -143,7 +143,7 @@ class Blokbay extends PaymentModule
         $option = new PaymentOption();
         $option->setModuleName($this->name)
             ->setCallToActionText($this->l('Pay with crypto'))
-            ->setAdditionalInformation($this->l('BTC, USDC, USDT or ETH from your wallet.'))
+            ->setAdditionalInformation($this->l('Pay in crypto: USDT, USDC, ETH, BTC or SOL, from your wallet or an exchange'))
             ->setAction($this->context->link->getModuleLink($this->name, 'redirect', [], true));
 
         return [$option];
